@@ -27,7 +27,15 @@ const postSchema = new mongoose.Schema({
     user: {
         type: String, 
         default: 'Nežinomas'
-    }
+    }, 
+    show_user_name: { 
+        type: Boolean,
+        default: false 
+        },
+    age: {
+        type: Number,
+        required: true,
+    }    
 }, {timestamps: true});
 
 module.exports = mongoose.model('Post', postSchema)

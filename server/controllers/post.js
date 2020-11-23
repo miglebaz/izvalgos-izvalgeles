@@ -1,9 +1,8 @@
 const Post = require('../models/post')
 const slugify = require('slugify')
-const post = require('../models/post')
 
 exports.create = (req, res) => {
-    const{title, content, user} = req.body
+    const{title, content, user, show_user_name, age} = req.body
     const slug = slugify(title)
 
 
@@ -18,7 +17,7 @@ exports.create = (req, res) => {
     }
 
 
-    Post.create({title, content, user, slug}, (err, post) =>{
+    Post.create({title, content, user, slug, show_user_name,age}, (err, post) =>{
         if(err) {
             console.log(err)
             res.status(400).json({error: 'Įžvalga jau egzistuoja'})
@@ -49,8 +48,8 @@ exports.read = (req, res) => {
 
     exports.update = (req, res) => {
         const { slug } = req.params;
-        const { title, content, user } = req.body;
-        Post.findOneAndUpdate({ slug }, { title, content, user }, { new: true }).exec((err, post) => {
+        const { title, content, user, show_user_name, age  } = req.body;
+        Post.findOneAndUpdate({ slug }, { title, content, user, show_user_name, age }, { new: true }).exec((err, post) => {
             if (err) console.log(err);
             res.json(post);
         });
