@@ -50,11 +50,11 @@ const App = () => {
                 <div className="row" key={post._id} style={{ borderBottom: '1px solid silver' }}>
                     <div className="col pt-3 pb-2">
                         <Link to={`/post/${post.slug}`}>
-                        <h2 class="h4">{post.title}</h2>
+                        <h2 className="h4">{post.title}</h2>
                         </Link>
                         <p className="lead">{post.content.substring(0, 100)}</p>
                         <p>
-                            Autorius <span className="badge">{post.user}</span> Sukurta{' '}
+            Autorius <span className="badge">{post.show_user_name === false || null ? post.user + " " + post.age + ' metų'  : "Nežinomas"}</span> Sukurta{' '}
                             <span className="badge">{new Date(post.createdAt).toLocaleString()}</span>
                         </p>
                 

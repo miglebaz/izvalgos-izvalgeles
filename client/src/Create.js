@@ -7,10 +7,13 @@ const Create = () => {
     const [state, setState] = useState({
         title: '',
         content: '',
-        user: ''
+        user: '',
+        show_user_name: false,
+        age: '', 
+        
     });
     // destructure values from state
-    const { title, content, user } = state;
+    const { title, content, user, show_user_name, age} = state;
 
     // onchange event handler
     const handleChange = name => event => {
@@ -18,15 +21,28 @@ const Create = () => {
         setState({ ...state, [name]: event.target.value });
     };
 
+    const handleChecked = name => event => {
+        // console.log('name', name, 'event', event.target.value);
+        setState({ ...state, [name]: event.target.checked });
+    };
+
+    const handleCheckedEvent = name => event => {
+        // console.log('name', name, 'event', event.target.value);
+        setState({ show_user_name : event.target.show_user_name ? event.target.checked :  false });
+    };
+
+
+
+
     const handleSubmit = event => {
         event.preventDefault();
-        // console.table({ title, content, user });
+         console.table({ title, content, user, show_user_name, age });
         axios
-            .post(`${process.env.REACT_APP_API}/post`, { title, content, user })
+            .post(`${process.env.REACT_APP_API}/post`, { title, content, user, show_user_name, age })
             .then(response => {
                 console.log(response);
                 // empty state
-                setState({ ...state, title: '', content: '', user: '' });
+                setState({ ...state, title: '', content: '', user: '' ,show_user_name: '', age: '' });
                 // show sucess alert
                 alert(`Įžvalga ${response.data.title} pridėta`);
             })
@@ -73,6 +89,29 @@ const Create = () => {
                         type="text"
                         className="form-control"
                         placeholder="Vardas"
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                <div className="form-check">
+                    <input
+                        onChange={handleCheckedEvent('show_user_name')}
+                        value={show_user_name}
+                        type="checkbox"
+                        className="form-check-input"
+                    />
+                    <label className="form-check-label text-muted">Nerodyti autoriaus vardo</label>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label className="text-muted">Amžius</label>
+                    <input
+                        onChange={handleChange('age')}
+                        value={age}
+                        type="number"
+                        min="1"
+                        max="105"
+                        className="form-control"
                         required
                     />
                 </div>

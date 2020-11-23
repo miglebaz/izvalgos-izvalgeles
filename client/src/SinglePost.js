@@ -23,7 +23,7 @@ const SinglePost = (props) => {
             <hr />
             <p className="lead">{post.content}</p>
             <p>
-                Autorius <span className="badge">{post.user}</span> Sukurta{' '}
+                Autorius <span className="badge">{post.show_user_name === false ? post.user + " " + post.age + ' metų'  : "Nežinomas"}</span> Sukurta{' '}
                 <span className="badge">{new Date(post.createdAt).toLocaleString()}</span>
             </p>
         </div>

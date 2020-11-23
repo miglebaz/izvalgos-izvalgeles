@@ -7,16 +7,19 @@ const UpdatePost = props => {
         title: '',
         content: '',
         slug: '',
-        user: ''
+        user: '',
+        show_user_name: false,
+        age: '',
     });
-    const { title, content, slug, user } = state;
+    const { title, content, slug, user, show_user_name, age } = state;
 
     useEffect(() => {
         axios
             .get(`${process.env.REACT_APP_API}/post/${props.match.params.slug}`)
             .then(response => {
-                const { title, content, slug, user } = response.data;
-                setState({ ...state, title, content, slug, user });
+                const { title, content, slug, user,age ,show_user_name} = response.data;
+                console.log(response.data)
+                setState({ ...state, title, content, slug, user, show_user_name, age});
             })
             .catch(error => alert('Error loading single post'));
     }, []);
@@ -27,16 +30,22 @@ const UpdatePost = props => {
         setState({ ...state, [name]: event.target.value });
     };
 
+    const handleChecked = name => event => {
+        // console.log('name', name, 'event', event.target.value);
+        setState({ ...state, [name]: event.target.checked });
+    };
+
     const handleSubmit = event => {
         event.preventDefault();
-        // console.table({ title, content, user });
+        console.table({ title, content, user, show_user_name, age });
+
         axios
             .put(`${process.env.REACT_APP_API}/post/${slug}`, { title, content, user })
             .then(response => {
                 console.log(response);
-                const { title, content, slug, user } = response.data;
+                const { title, content, slug, user ,age ,show_user_name } = response.data;
                 // empty state
-                setState({ ...state, title, content, slug, user });
+                setState({ ...state, title, content, slug, user,age ,show_user_name });
                 // show sucess alert
                 alert(`Įžvalga ${title} atnaujinta`);
             })
@@ -81,6 +90,31 @@ const UpdatePost = props => {
                     required
                 />
             </div>
+            <div className="form-group">
+                <div className="form-check">
+                    <input
+                        onChange={handleChecked('show_user_name')}
+                     //   value={show_user_name}
+                        type="checkbox"
+                        checked={show_user_name}
+                        className="form-check-input"
+                  
+                    />
+                    <label className="form-check-label text-muted">Nerodyti autoriaus vardo</label>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label className="text-muted">Amžius</label>
+                    <input
+                        onChange={handleChange('age')}
+                        value={age}
+                        type="number"
+                        min="1"
+                        max="105"
+                        className="form-control"
+                        required
+                    />
+                </div>
             <div>
                 <button className="btn btn-primary">Atnaujinti</button>
             </div>
